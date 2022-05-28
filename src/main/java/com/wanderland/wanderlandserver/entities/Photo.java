@@ -1,7 +1,12 @@
+//https://www.baeldung.com/jpa-many-to-many
+
 package com.wanderland.wanderlandserver.entities;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -14,6 +19,17 @@ public class Photo {
     private float lon;
     private float lat;
     private byte[] data;
+
+    private String captureIsoDate;
+    @ManyToMany(fetch = FetchType.EAGER) // Macht dass Routen sofort zusammen mit den anderen Datenfeldern geladen werden (und nicht erst dann, wenn
+    // sie tatsächlich benötigt werden.)
+    // Definiert die joining table, die für many-to-many relationships benötigt wird
+    @JoinTable(
+            name = "linked_routes",
+            joinColumns = @JoinColumn(name = "photo_id", referencedColumnName = "id", nullable = false, updatable = false),
+            inverseJoinColumns = @JoinColumn(name = "route_id", referencedColumnName = "route_id", nullable = false, updatable = false)
+    )
+    Set<Route> routes = new HashSet<Route>();
 
     // Empty constructor
     public Photo() {
@@ -43,5 +59,20 @@ public class Photo {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public String getCaptureIsoDate() {
+        return captureIsoDate;
+    }
+    public void setCaptureIsoDate(String captureIsoDate) {
+        this.captureIsoDate = captureIsoDate;
+    }
+
+    public Set<Route> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(Set<Route> routes) {
+        this.routes = routes;
     }
 }
