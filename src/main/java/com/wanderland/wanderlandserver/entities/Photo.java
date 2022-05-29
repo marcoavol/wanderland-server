@@ -74,4 +74,19 @@ public class Photo {
     public void setRoutes(Set<Route> routes) {
         this.routes = routes;
     }
+
+    @Override
+    public String toString() {
+        return  "Filename: "
+                + this.src
+                + "\n"
+                + "Breite: "
+                + this.lat
+                + "\n"
+                + "Länge: "
+                + this.lon
+                + "\n"
+                + "Aufnahmedatum: "
+                + this.captureIsoDate;
+    }
 }

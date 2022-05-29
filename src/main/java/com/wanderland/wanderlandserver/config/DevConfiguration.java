@@ -53,7 +53,7 @@ public class DevConfiguration {
     @Autowired
     RouteRepository routeRepository;
 
-    @PostConstruct
+ //   @PostConstruct
     public void createData(){
 
         // Photo Objekte erstellen. Hier ist das Datenfeld "routes" noch leer
@@ -65,9 +65,9 @@ public class DevConfiguration {
         photo6 = createPhoto((float) 46.6, (float) 8.6);
 
 
-        route1 = createRoute(1, set1);
-        route2 = createRoute(2, set2);
-        route3 = createRoute(3, set3);
+        route1 = createRoute(1L, set1);
+        route2 = createRoute(2L, set2);
+        route3 = createRoute(3L, set3);
 
 
         routeRepository.save(route1);
@@ -102,10 +102,12 @@ public class DevConfiguration {
         return photo;
     }
 
-     private Route createRoute(int id, Set<Photo> set){
+     private Route createRoute(Long id, Set<Photo> set){
         Route route = new Route();
         route.setRoute_id(id);
-        route.setPhotos(set);
+        for(Photo p : set){
+            route.addPhoto(p);
+        }
         return route;
      }
 
