@@ -1,11 +1,11 @@
 ## Wanderland Server
 
 
-* PhotoController gibt im Moment nur einen String in Home Route aus (localhost:8080)
+* localhost:8080/api-docs.html: Dokumentation des APIs. 
 
 
 ### Dev Profil
-* DevConfiguration ist im Prinzip eine Helferklasse, die zu Testzwecken ein "Photo" erzeugt und in die H2 Datenbank speichert. Die Tabelle kann dann via H2 console angeschaut werden.
+* DevConfiguration ist eine Helferklasse, die Testdaten erzeugt und in die H2 Datenbank speichert. Die Tabelle kann dann via H2 console angeschaut werden.
 
 
 ### Prod Profil
