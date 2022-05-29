@@ -97,11 +97,9 @@ public class DevConfiguration {
         Photo photo = new Photo();
         photo.setLat(lat);
         photo.setLon(lon);
-        photo.setData(null);
+        photo.setSrc("");
         photo.setCaptureIsoDate("");
         return photo;
-
-
     }
 
      private Route createRoute(int id, Set<Photo> set){

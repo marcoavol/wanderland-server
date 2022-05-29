@@ -4,7 +4,6 @@ package com.wanderland.wanderlandserver.entities;
 
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +17,7 @@ public class Photo {
 
     private float lon;
     private float lat;
-    private byte[] data;
+    private String src;
 
     private String captureIsoDate;
     @ManyToMany(fetch = FetchType.EAGER) // Macht dass Routen sofort zusammen mit den anderen Datenfeldern geladen werden (und nicht erst dann, wenn
@@ -53,12 +52,12 @@ public class Photo {
         this.lat = lat;
     }
 
-    public byte[] getData() {
-        return data;
+    public String getSrc() {
+        return src;
     }
 
-    public void setData(byte[] data) {
-        this.data = data;
+    public void setSrc(String src) {
+        this.src = src;
     }
 
     public String getCaptureIsoDate() {

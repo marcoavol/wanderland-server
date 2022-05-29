@@ -35,7 +35,7 @@ public class ProdConfiguration {
         Photo photo = new Photo();
         photo.setLat(lat);
         photo.setLon(lon);
-        photo.setData(null);
+        photo.setSrc(null);
         return photo;
     }
 
