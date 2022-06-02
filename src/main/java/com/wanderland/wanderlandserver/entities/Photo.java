@@ -20,8 +20,10 @@ public class Photo {
     private String src;
 
     private String captureIsoDate;
-    @ManyToMany(fetch = FetchType.EAGER) // Macht dass Routen sofort zusammen mit den anderen Datenfeldern geladen werden (und nicht erst dann, wenn
+    @ManyToMany(fetch = FetchType.EAGER)
+    // FetchType.EAGER: macht dass Routen sofort zusammen mit den anderen Datenfeldern geladen werden (und nicht erst dann, wenn
     // sie tatsächlich benötigt werden.)
+
     // Definiert die joining table, die für many-to-many relationships benötigt wird
     @JoinTable(
             name = "linked_routes",
@@ -71,8 +73,8 @@ public class Photo {
         return routes;
     }
 
-    public void setRoutes(Set<Route> routes) {
-        this.routes = routes;
+    public void addRoute(Route route) {
+        this.routes.add(route);
     }
 
     @Override

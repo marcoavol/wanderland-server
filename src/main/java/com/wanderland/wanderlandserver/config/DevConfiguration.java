@@ -1,3 +1,6 @@
+/// Ausser Betrieb. @PostConstruct ist auskommentiert
+
+
 // Speichert ein "Photo" in der db
 
 package com.wanderland.wanderlandserver.config;
