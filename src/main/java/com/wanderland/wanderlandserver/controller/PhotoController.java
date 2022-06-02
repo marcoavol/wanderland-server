@@ -6,7 +6,8 @@ import com.wanderland.wanderlandserver.entities.Photo;
 import com.wanderland.wanderlandserver.entities.Route;
 import com.wanderland.wanderlandserver.repositories.PhotoRepository;
 import com.wanderland.wanderlandserver.repositories.RouteRepository;
-import com.wanderland.wanderlandserver.services.PhotoDTO;
+import com.wanderland.wanderlandserver.services.GetPhotoDTO;
+import com.wanderland.wanderlandserver.services.PhotoInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,17 +39,21 @@ public class PhotoController {
     @CrossOrigin(origins = {"http://localhost:4200", "*"})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> getPhotosByRouteId(@PathVariable Long routeId) {
-   // public ResponseEntity<String> getPhotosByRouteId(@PathVariable Long routeId) {
         Optional<Route> route = routeRepository.findById(routeId);
         Set<Photo> photos_on_route = route.isPresent() ? route.get().getPhotos() : new HashSet<Photo>();
-        Gson objGson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonString = objGson.toJson(photos_on_route);
 
-        //String jsonString = photos_on_route.toString();
-        //System.out.println("Json string: " + jsonString);
+        // Photo zu GetPhotoDTO konvertieren. Insbesondere wird routes vereinfacht zu einem Array nur mit den IDs.
+        // Das ist zwingend nötig, sonst kommt es im nächsten Schritt zu einem StackOverflowError
+        Set<GetPhotoDTO> photos_dto = new HashSet<>();
+        for(Photo p : photos_on_route){
+            photos_dto.add(p.convertToPhotoDTO(p));
+        }
+
+        Gson objGson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonString = objGson.toJson(photos_dto);
+
         return ResponseEntity.ok(jsonString);
-        //return ResponseEntity.ok(route.isPresent() ? route.get().getPhotos() : new HashSet<Photo>());
-        //return ResponseEntity.ok(route.isPresent() ? "JA" : "NEIN");
+
     }
 
 
@@ -56,9 +61,8 @@ public class PhotoController {
     @CrossOrigin(origins = "http://localhost:4200")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> savePhoto(@RequestPart MultipartFile photo, @RequestParam String photoDetails) throws IOException {
-
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        PhotoDTO details = gson.fromJson(photoDetails, PhotoDTO.class);
+        PhotoInfo details = gson.fromJson(photoDetails, PhotoInfo.class);
 
         // Write photo to file
         String fileName = StringUtils.cleanPath(photo.getOriginalFilename());

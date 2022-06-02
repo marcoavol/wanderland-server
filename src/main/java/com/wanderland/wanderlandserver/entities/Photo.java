@@ -3,9 +3,14 @@
 package com.wanderland.wanderlandserver.entities;
 
 
+import com.wanderland.wanderlandserver.services.GetPhotoDTO;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -76,6 +81,27 @@ public class Photo {
     public void addRoute(Route route) {
         this.routes.add(route);
     }
+
+    public GetPhotoDTO convertToPhotoDTO(Photo photo){
+        GetPhotoDTO getPhotoDTO = new GetPhotoDTO();
+        getPhotoDTO.setLat(photo.getLat());
+        getPhotoDTO.setLon(photo.getLon());
+        getPhotoDTO.setSrc(photo.getSrc());
+
+        // Das ist lächerlich. Das muss einfacher gehen
+        List<Long> temp_route_ids =
+                photo.getRoutes().stream()
+                        .map(Route::getRoute_id)
+                        .collect(Collectors.toList());
+        Long[] route_ids = new Long[temp_route_ids.size()];
+        for (int i = 0; i < temp_route_ids.size(); i++) {
+            route_ids[i] = temp_route_ids.get(i);
+        }
+        getPhotoDTO.setRouteIds(route_ids);
+
+        return getPhotoDTO;
+    }
+
 
     @Override
     public String toString() {
