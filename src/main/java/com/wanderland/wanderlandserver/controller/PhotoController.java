@@ -21,6 +21,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -60,27 +61,28 @@ public class PhotoController {
     @PostMapping(path = "/photos", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @CrossOrigin(origins = "http://localhost:4200")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> savePhoto(@RequestPart MultipartFile photo, @RequestParam String photoDetails) throws IOException {
+    public ResponseEntity<String> savePhoto(@RequestPart MultipartFile photo, @RequestParam String info) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        PhotoInfo details = gson.fromJson(photoDetails, PhotoInfo.class);
+        PhotoInfo photoInfo = gson.fromJson(info, PhotoInfo.class);
 
         // Write photo to file
         String fileName = StringUtils.cleanPath(photo.getOriginalFilename());
         String dirPath = "src/main/resources/photos/";
-        Path newFile = Paths.get(dirPath + fileName);
-        Files.write(newFile, photo.getBytes());
+        Path filePath = Paths.get(dirPath + new Date().getTime() + "-" + fileName);
+        Files.createDirectories(filePath.getParent());
+        Files.write(filePath, photo.getBytes());
 
         // Photo Objekt instanziieren (noch mit leeren routes)
         Photo current_photo = new Photo();
-        current_photo.setLon(details.getLon());
-        current_photo.setLat(details.getLat());
-        current_photo.setCaptureIsoDate(details.getCaptureIsoDate());
-        current_photo.setSrc(newFile.toString());
+        current_photo.setLon(photoInfo.getLon());
+        current_photo.setLat(photoInfo.getLat());
+        current_photo.setCaptureIsoDate(photoInfo.getCaptureIsoDate());
+        current_photo.setSrc(filePath.toUri().toString());
 
          // Kontrollieren, ob die aktuelle Route-ID in der db schon existiert
         // Wenn ja: Das aktuelle Photo zur existierenden Route hinzufügen
         // Wenn nein: ein neues Route Objekt instanziieren und das aktuelle Photo hinzufügen
-        for (Long id : details.getRouteIds()){
+        for (Long id : photoInfo.getRouteIds()){
             // Alternativ könnte man auch alle Ids gleichzeitig abfragen und eine Liste aller übereinstimmenden Routen zurückerhalten
             // Vorteil wäre dass man weniger Db Abfragen machen müsste. Das ist aber wahrscheinlich im Moment nicht so ein Problem.
             // Ich finde das Aktualisieren der Db intuitiver, so wie es im Moment ist
@@ -105,7 +107,7 @@ public class PhotoController {
 
         photoRepository.save(current_photo);
 
-        return ResponseEntity.created(URI.create("http://localhost:8080/photos/1234")).build();
+        return ResponseEntity.created(URI.create(filePath.toUri().toString())).build();
 
     }
 
