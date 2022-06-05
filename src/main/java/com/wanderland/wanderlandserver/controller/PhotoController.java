@@ -107,7 +107,7 @@ public class PhotoController {
 
         photoRepository.save(current_photo);
 
-        return ResponseEntity.created(URI.create(filePath.toUri().toString())).build();
+        return ResponseEntity.created(filePath.toUri()).build();
 
     }
 
