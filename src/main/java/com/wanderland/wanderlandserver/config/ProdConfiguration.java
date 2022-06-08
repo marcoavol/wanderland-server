@@ -1,30 +1,23 @@
-// Speichert ein "Photo" in der PostgreSQL db
-
 package com.wanderland.wanderlandserver.config;
 
-
-import com.wanderland.wanderlandserver.entities.Photo;
+import com.wanderland.wanderlandserver.domain.Photo;
 import com.wanderland.wanderlandserver.repositories.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 @Configuration
 @Profile("prod")
-@Transactional // Stellt sicher, dass entweder alle oder keine der folgenden db Operationen durchgeführt werden
+@Transactional
 public class ProdConfiguration {
 
     Photo photo1;
 
-
     @Autowired
     PhotoRepository photoRepository;
 
-
-    @PostConstruct
+//    @PostConstruct
     public void createData(){
         photo1 = createPhoto((float) 46.2, (float) 8.6);
         photoRepository.save(photo1);
@@ -38,7 +31,5 @@ public class ProdConfiguration {
         photo.setSrc(null);
         return photo;
     }
-
-
 
 }

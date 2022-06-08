@@ -1,4 +1,4 @@
-package com.wanderland.wanderlandserver.entities;
+package com.wanderland.wanderlandserver.domain;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -8,23 +8,20 @@ import java.util.Set;
 public class Route {
 
         @Id
-        @Column(name = "route_id", nullable = false)
-        private Long route_id;
+        @Column(name = "id", nullable = false)
+        private Integer id;
+
         @ManyToMany(mappedBy = "routes", fetch = FetchType.EAGER)
         private Set<Photo> photos = new HashSet<Photo>();
 
-        // Empty constructor
-        public Route() {
+        public Route() { }
+
+        public Integer getId() {
+                return id;
         }
 
-        // Getters and setters
-
-        public Long getRoute_id() {
-                return route_id;
-        }
-
-        public void setRoute_id(Long route_id) {
-                this.route_id = route_id;
+        public void setId(Integer route_id) {
+                this.id = route_id;
         }
 
         public Set<Photo> getPhotos() {
@@ -37,6 +34,7 @@ public class Route {
 
         @Override
         public String toString(){
-               return "Routen-ID: " + this.route_id;
+               return "RouteId: " + this.id;
         }
+
 }

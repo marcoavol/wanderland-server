@@ -1,20 +1,12 @@
-/// Ausser Betrieb. @PostConstruct ist auskommentiert
-
-
-// Speichert ein "Photo" in der db
-
 package com.wanderland.wanderlandserver.config;
 
-
-import com.wanderland.wanderlandserver.entities.Photo;
-import com.wanderland.wanderlandserver.entities.Route;
+import com.wanderland.wanderlandserver.domain.Photo;
+import com.wanderland.wanderlandserver.domain.Route;
 import com.wanderland.wanderlandserver.repositories.PhotoRepository;
 import com.wanderland.wanderlandserver.repositories.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -22,11 +14,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
 @Configuration
 @Profile("dev")
-@Transactional // Stellt sicher, dass entweder alle oder keine der folgenden db Operationen durchgeführt werden
+@Transactional
 public class DevConfiguration {
+
+    @Autowired
+    PhotoRepository photoRepository;
+
+    @Autowired
+    RouteRepository routeRepository;
 
     Photo photo1;
     Photo photo2;
@@ -39,22 +36,12 @@ public class DevConfiguration {
     Route route2;
     Route route3;
 
-
     Set<Photo> set1 = Stream.of(photo1, photo2, photo6)
             .collect(Collectors.toCollection(HashSet::new));
-
     Set<Photo> set2 = Stream.of(photo1, photo3)
             .collect(Collectors.toCollection(HashSet::new));
-
-    Set<Photo> set3= Stream.of(photo4, photo5, photo6)
+    Set<Photo> set3 = Stream.of(photo4, photo5, photo6)
             .collect(Collectors.toCollection(HashSet::new));
-
-
-    @Autowired
-    PhotoRepository photoRepository;
-
-    @Autowired
-    RouteRepository routeRepository;
 
  //   @PostConstruct
     public void createData(){
@@ -67,11 +54,9 @@ public class DevConfiguration {
         photo5 = createPhoto((float) 46.5, (float) 8.5);
         photo6 = createPhoto((float) 46.6, (float) 8.6);
 
-
-        route1 = createRoute(1L, set1);
-        route2 = createRoute(2L, set2);
-        route3 = createRoute(3L, set3);
-
+        route1 = createRoute(1, set1);
+        route2 = createRoute(2, set2);
+        route3 = createRoute(3, set3);
 
         routeRepository.save(route1);
         routeRepository.save(route2);
@@ -85,14 +70,12 @@ public class DevConfiguration {
         photo5.getRoutes().addAll(Arrays.asList(route3));
         photo6.getRoutes().addAll(Arrays.asList(route1, route3));
 
-
         photoRepository.save(photo1);
         photoRepository.save(photo2);
         photoRepository.save(photo3);
         photoRepository.save(photo4);
         photoRepository.save(photo5);
         photoRepository.save(photo6);
-
 
     }
 
@@ -105,15 +88,13 @@ public class DevConfiguration {
         return photo;
     }
 
-     private Route createRoute(Long id, Set<Photo> set){
+     private Route createRoute(Integer id, Set<Photo> photos){
         Route route = new Route();
-        route.setRoute_id(id);
-        for(Photo p : set){
-            route.addPhoto(p);
+        route.setId(id);
+        for(Photo photo : photos){
+            route.addPhoto(photo);
         }
         return route;
      }
-
-
 
 }

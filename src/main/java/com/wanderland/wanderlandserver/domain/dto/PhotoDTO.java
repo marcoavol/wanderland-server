@@ -1,20 +1,21 @@
-package com.wanderland.wanderlandserver.services;
+package com.wanderland.wanderlandserver.domain.dto;
 
-public class GetPhotoDTO extends PhotoInfo {
+import com.wanderland.wanderlandserver.domain.PhotoInfo;
+
+public class PhotoDTO extends PhotoInfo {
+
     private String src;
 
-    // empty constructor
-    public GetPhotoDTO() {
+    public PhotoDTO() {
         super();
     }
 
-    //getter
     public String getSrc() {
         return src;
     }
 
-    //setter
     public void setSrc(String src) {
         this.src = src;
     }
+
 }
