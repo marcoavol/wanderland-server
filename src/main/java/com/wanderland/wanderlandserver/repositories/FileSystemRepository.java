@@ -9,7 +9,7 @@ import java.nio.file.Path;
 @Repository
 public class FileSystemRepository {
 
-    public static final String RESOURCES_DIR = FileSystemRepository.class.getResource("/").getPath();
+    private final String RESOURCES_DIR = FileSystemRepository.class.getResource("/").getPath();
 
     public Path saveInFileSystem(byte[] content, String fileName, String subdir) throws IOException {
         Path filePath = Path.of(RESOURCES_DIR + subdir + "/" + fileName);
