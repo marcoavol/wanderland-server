@@ -26,7 +26,7 @@ public class PhotoService {
         return photoDTO;
     }
 
-    public Photo toPhoto(String src, PhotoInfo photoInfo, Collection<Route> routes) throws Exception {
+    public Photo toPhoto(String src, PhotoInfo photoInfo, Collection<Route> routes) {
         Photo photo = new Photo();
         photo.setSrc(src);
         photo.setLon(photoInfo.getLon());
