@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 @Repository
 public class FileSystemRepository {
@@ -16,8 +17,12 @@ public class FileSystemRepository {
         return filePath;
     }
 
-    public FileSystemResource findInFileSystem(Path path) throws IllegalArgumentException {
-        return new FileSystemResource(path);
+    public Optional<FileSystemResource> findInFileSystem(Path path) {
+        FileSystemResource resource = null;
+        try {
+            resource = new FileSystemResource(path);
+        } catch (IllegalArgumentException e) { }
+        return Optional.ofNullable(resource);
     }
 
 }

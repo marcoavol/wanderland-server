@@ -1,6 +1,7 @@
 package com.wanderland.wanderlandserver.domain;
 
 import javax.persistence.*;
+import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,10 +9,8 @@ import java.util.Set;
 @Entity
 public class Photo {
 
-    // TODO: Use some kind of hash from photo byteArray and check on creation if photo with id already exists to prevent adding copies
     @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true, updatable = false)
     private Long id;
 
     private float lon;
@@ -32,13 +31,13 @@ public class Photo {
 
     public Photo() { }
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public float getLon() {
         return lon;
@@ -83,17 +82,13 @@ public class Photo {
 
     @Override
     public String toString() {
-        return  "src: "
-                + this.src
+        return  "src: " + this.src
                 + "\n"
-                + "lon: "
-                + this.lon
+                + "lon: " + this.lon
                 + "\n"
-                + "lat: "
-                + this.lat
+                + "lat: " + this.lat
                 + "\n"
-                + "captureIsoDate: "
-                + this.captureIsoDate;
+                + "captureIsoDate: " + this.captureIsoDate;
     }
 
 }

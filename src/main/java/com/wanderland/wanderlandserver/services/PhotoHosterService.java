@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class PhotoHosterService implements FileHoster {
@@ -30,7 +31,7 @@ public class PhotoHosterService implements FileHoster {
         return new URL(BASE_URL + PUBLIC_RESOURCES_PATH + "/photos/" + uniqueFileName);
     }
 
-    public FileSystemResource load(String fileName) throws Exception {
+    public Optional<FileSystemResource> load(String fileName) {
         Path filePath = Path.of(PHOTO_UPLOAD_PATH + "/" + fileName);
         return this.fileSystemRepository.findInFileSystem(filePath);
     }

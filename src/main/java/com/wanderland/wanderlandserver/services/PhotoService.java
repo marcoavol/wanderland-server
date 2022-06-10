@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.Collection;
 
 @Service
@@ -16,6 +17,14 @@ public class PhotoService {
 
     @Autowired
     FileHoster photoHosterService;
+
+    public Long generateId(PhotoInfo photoInfo) {
+        String infoStr = photoInfo.getCaptureIsoDate() + photoInfo.getLon() + photoInfo.getLat();
+        ByteBuffer buffer = ByteBuffer.allocate(infoStr.getBytes().length);
+        buffer.put(infoStr.getBytes());
+        buffer.flip();
+        return buffer.getLong();
+    }
 
     public PhotoDTO toDTO(Photo photo){
         PhotoDTO photoDTO = new PhotoDTO();
@@ -28,10 +37,11 @@ public class PhotoService {
 
     public Photo toPhoto(String src, PhotoInfo photoInfo, Collection<Route> routes) {
         Photo photo = new Photo();
-        photo.setSrc(src);
+        photo.setId(this.generateId(photoInfo));
         photo.setLon(photoInfo.getLon());
         photo.setLat(photoInfo.getLat());
         photo.setCaptureIsoDate(photoInfo.getCaptureIsoDate());
+        photo.setSrc(src);
         photo.addRoutes(routes);
         return photo;
     }
