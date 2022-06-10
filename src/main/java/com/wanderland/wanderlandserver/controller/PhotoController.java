@@ -6,8 +6,10 @@ import com.wanderland.wanderlandserver.repositories.PhotoRepository;
 import com.wanderland.wanderlandserver.repositories.RouteRepository;
 import com.wanderland.wanderlandserver.domain.dto.PhotoDTO;
 import com.wanderland.wanderlandserver.domain.PhotoInfo;
+import com.wanderland.wanderlandserver.services.PhotoHosterService;
 import com.wanderland.wanderlandserver.services.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,20 +32,13 @@ public class PhotoController {
     @Autowired
     PhotoService photoService;
 
-    @GetMapping(path = "/photos/{routeId}")
-    @CrossOrigin(origins = {"http://localhost:4200"})
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> getPhotosByRouteId(@PathVariable Integer routeId) {
-        Optional<Route> route = this.routeRepository.findById(routeId);
-        Set<Photo> photos = route.isPresent() ? route.get().getPhotos() : new HashSet<Photo>();
-        PhotoDTO[] photoDTOs = photos.stream().map(this.photoService::toDTO).toArray(PhotoDTO[]::new);
-        return new ResponseEntity(photoDTOs, HttpStatus.OK);
-    }
+    @Autowired
+    PhotoHosterService photoHosterService;
 
-    @PostMapping(path = "/photos", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(path = "/photos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @CrossOrigin(origins = "http://localhost:4200")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> createPhoto(@RequestPart MultipartFile photoFile, @RequestPart PhotoInfo photoInfo) {
+    public ResponseEntity<PhotoDTO> createPhoto(@RequestPart MultipartFile photoFile, @RequestPart PhotoInfo photoInfo) {
         Set<Route> routes = this.routeRepository.createOrGet(photoInfo.getRouteIds());
         // TODO: Add better (more specific) exeption handling instead of passing all possible exceptions up to here
         Photo photo;
@@ -57,9 +52,29 @@ public class PhotoController {
         return new ResponseEntity(this.photoService.toDTO(photo), HttpStatus.CREATED);
     }
 
+    @GetMapping(path = "/photos/{routeId}")
+    @CrossOrigin(origins = {"http://localhost:4200"})
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<PhotoDTO[]> getPhotosByRouteId(@PathVariable Integer routeId) {
+        Optional<Route> route = this.routeRepository.findById(routeId);
+        Set<Photo> photos = route.isPresent() ? route.get().getPhotos() : new HashSet<Photo>();
+        PhotoDTO[] photoDTOs = photos.stream().map(this.photoService::toDTO).toArray(PhotoDTO[]::new);
+        return new ResponseEntity(photoDTOs, HttpStatus.OK);
+    }
 
-
-
+    @GetMapping(path = "/resources/photos/{fileName}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @CrossOrigin(origins = {"http://localhost:4200"})
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<FileSystemResource> getPhotoByFileName(@PathVariable String fileName) {
+        // TODO: Add better (more specific) exeption handling instead of passing all possible exceptions up to here
+        FileSystemResource photoResource;
+        try {
+            photoResource = this.photoHosterService.load(fileName);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity(photoResource, HttpStatus.OK);
+    }
 
 }
 
