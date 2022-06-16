@@ -20,6 +20,15 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Rest controller handling GET and POST requests from front-end
+ *
+ * @author Marco Volken
+ * @author Irene Keller
+ *
+ */
+
+
 @RestController
 public class PhotoController {
 
@@ -34,6 +43,14 @@ public class PhotoController {
 
     @Autowired
     PhotoHosterService photoHosterService;
+
+
+    /**
+     * Handles upload of a new photo from the front-end
+     * @param photoFile  MultipartFile
+     * @param photoInfo
+     * @return PhotoDTO
+     */
 
     @PostMapping(path = "/photos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @CrossOrigin(origins = "http://localhost:4200")
@@ -56,6 +73,11 @@ public class PhotoController {
         return new ResponseEntity(photoDTO, HttpStatus.CREATED);
     }
 
+    /**
+     *
+     * @param routeId  Identifier of a specific route
+     * @return List of PhotoDTO objects for photos associated with the route
+     */
     @GetMapping(path = "/photos/{routeId}")
     @CrossOrigin(origins = {"http://localhost:4200"})
     @ResponseStatus(HttpStatus.OK)
@@ -65,6 +87,13 @@ public class PhotoController {
         PhotoDTO[] photoDTOs = photos.stream().map(this.photoService::toDTO).toArray(PhotoDTO[]::new);
         return new ResponseEntity(photoDTOs, HttpStatus.OK);
     }
+
+    /**
+     *
+     * @param fileName
+     * @return
+     */
+
 
     @GetMapping(path = "/resources/photos/{fileName}", produces = MediaType.IMAGE_JPEG_VALUE)
     @CrossOrigin(origins = {"http://localhost:4200"})

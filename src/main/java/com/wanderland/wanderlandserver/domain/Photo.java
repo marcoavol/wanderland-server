@@ -6,6 +6,16 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+
+/**
+ * Photo saves information on where and when a photo was taken, where it is saved and which routes it is located on to the repository.
+ * There is a many-to-many relationship between photos and routes.
+ *
+ * @author Marco Volken
+ * @author Irene Keller
+
+ */
+
 @Entity
 public class Photo {
 
@@ -29,7 +39,28 @@ public class Photo {
     )
     Set<Route> routes = new HashSet<Route>();
 
+    // Empty constructor
     public Photo() { }
+
+
+/**
+ * @param id Photo identifier
+ * @param   lon Longitude where photo was taken in decimal degrees
+ * @param   lat Latitude where photo was taken in decimal degrees
+ * @param captureIsoDate    Date when photo was taken
+ * @param src   Path to the jpg file on the file system
+ * @param routes    HashSet containing route(s) overlapping with the location of the photo
+
+ */
+ // Constructor with all instance variables. Required for unit tests
+    public Photo(Long id, float lon, float lat, String captureIsoDate, String src, Set<Route> routes) {
+        this.id = id;
+        this.lon = lon;
+        this.lat = lat;
+        this.captureIsoDate = captureIsoDate;
+        this.src = src;
+        this.routes = routes;
+    }
 
     public Long getId() {
         return id;

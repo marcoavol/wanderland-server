@@ -7,6 +7,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import javax.transaction.Transactional;
 
+
+/**
+ * DEPRECATED: Populates repositories with test data
+ *
+ * @author Irene Keller
+
+ */
+
+
 @Configuration
 @Profile("prod")
 @Transactional

@@ -1,3 +1,5 @@
+
+
 package com.wanderland.wanderlandserver.services;
 
 import com.wanderland.wanderlandserver.domain.dto.PhotoDTO;
@@ -12,12 +14,27 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Collection;
 
+
+
+/**
+
+ * @author Marco Volken
+ * @author Irene Keller
+
+ */
+
+
 @Service
 public class PhotoService {
 
     @Autowired
     FileHoster photoHosterService;
 
+    /**
+     *
+     * @param photoInfo
+     * @return  Identifier for photo generated from capture date and coordinates.
+     */
     public Long generateId(PhotoInfo photoInfo) {
         String infoStr = photoInfo.getCaptureIsoDate() + photoInfo.getLon() + photoInfo.getLat();
         ByteBuffer buffer = ByteBuffer.allocate(infoStr.getBytes().length);
@@ -25,6 +42,12 @@ public class PhotoService {
         buffer.flip();
         return buffer.getLong();
     }
+
+    /**
+     * Converter from Photo to PhotoDTO object
+     * @param photo
+     * @return PhotoDTO
+     */
 
     public PhotoDTO toDTO(Photo photo){
         PhotoDTO photoDTO = new PhotoDTO();
@@ -35,6 +58,13 @@ public class PhotoService {
         return photoDTO;
     }
 
+    /**
+     *
+     * @param src       path to photo on file system
+     * @param photoInfo PhotoInfo object
+     * @param routes    Set containing Route object(s) associated with the photo
+     * @return Photo
+     */
     public Photo toPhoto(String src, PhotoInfo photoInfo, Collection<Route> routes) {
         Photo photo = new Photo();
         photo.setId(this.generateId(photoInfo));
@@ -46,6 +76,13 @@ public class PhotoService {
         return photo;
     }
 
+
+    /**
+     *
+     * @param photoFile MultipartFile
+     * @return URL
+     * @throws Exception
+     */
     public URL saveFile(MultipartFile photoFile) throws Exception {
         return this.photoHosterService.save(
                 photoFile.getBytes(),
