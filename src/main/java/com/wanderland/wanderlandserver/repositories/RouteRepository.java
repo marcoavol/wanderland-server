@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 public interface RouteRepository extends JpaRepository<Route, Integer> {
 
+    // If the provided routeIds do not exist in the repository, new Route objects are instantiated and returned
+    // If the provided routIds already exist in the repository, they are returned
     @Transactional
     default Set<Route> createOrGet(Integer[] routeIds) {
         return Arrays.stream(routeIds).map(routeId -> {
