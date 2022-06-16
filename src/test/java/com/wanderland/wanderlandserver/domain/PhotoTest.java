@@ -11,6 +11,10 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Irene Keller
+ */
+
 class PhotoTest {
 
     private Photo photo;

@@ -7,10 +7,22 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
+/**
+ * JPA repository for routes
+ *
+ * @author Marco Volken
+ * @author Irene Keller
+
+ */
+
 public interface RouteRepository extends JpaRepository<Route, Integer> {
 
-    // If the provided routeIds do not exist in the repository, new Route objects are instantiated and returned
-    // If the provided routIds already exist in the repository, they are returned
+    /**
+     * @param routeIds  Integer array with route identifiers
+     * @return Set of Route object which are (i) newly instantiated if they do not yet exist in the repo or (ii) retrieved from the repo if they already exist.
+
+     */
     @Transactional
     default Set<Route> createOrGet(Integer[] routeIds) {
         return Arrays.stream(routeIds).map(routeId -> {

@@ -10,6 +10,15 @@ import java.nio.file.Path;
 import java.util.Date;
 import java.util.Optional;
 
+
+/**
+ *
+ * @author Marco Volken
+
+
+ */
+
+
 @Service
 public class PhotoHosterService implements FileHoster {
 
@@ -24,6 +33,7 @@ public class PhotoHosterService implements FileHoster {
 
     private final String PHOTO_UPLOAD_PATH = "src/main/upload/photos";
 
+
     @Override
     public URL save(byte[] fileContent, String fileName) throws Exception {
         String uniqueFileName = new Date().getTime() + "-" + fileName;
@@ -31,6 +41,12 @@ public class PhotoHosterService implements FileHoster {
         return new URL(BASE_URL + PUBLIC_RESOURCES_PATH + "/photos/" + uniqueFileName);
     }
 
+
+    /**
+     *
+     * @param fileName name of jpg file with photo
+     * @return  FileSystemResource
+     */
     public Optional<FileSystemResource> load(String fileName) {
         Path filePath = Path.of(PHOTO_UPLOAD_PATH + "/" + fileName);
         return this.fileSystemRepository.findInFileSystem(filePath);

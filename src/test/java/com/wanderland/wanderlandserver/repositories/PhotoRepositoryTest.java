@@ -20,6 +20,9 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Irene Keller
+ */
 
 @ExtendWith(SpringExtension.class) //integrates the Spring test context framework
 @DataJpaTest
@@ -48,8 +51,11 @@ class PhotoRepositoryTest {
 
     }
 
-    // Can we save and retrieve a photo?
-    // We add a photo with ID 1 to the db, then we expect that we can get a photo with ID 1 back from the db
+
+    /**
+     * Can we save and retrieve a photo?
+     * When we add a photo with ID 1 to the db, we expect that we can get a photo with ID 1 back from the db
+     */
     @Test
     public void addAndRetrievePhoto(){
         photoRepo.save(photo1);

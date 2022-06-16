@@ -7,8 +7,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-// A Photo object contains an ID, the coordinates where the photo was taken (lon=longitude; lat=latitude), the capture date and the path on the file system where the photo is stored
-// Additionally, it contains a set of routes on which the photo is located.
+/**
+ * Photo saves information on where and when a photo was taken, where it is saved and which routes it is located on to the repository.
+ * There is a many-to-many relationship between photos and routes.
+ *
+ * @author Marco Volken
+ * @author Irene Keller
+
+ */
+
 @Entity
 public class Photo {
 
@@ -35,9 +42,17 @@ public class Photo {
     // Empty constructor
     public Photo() { }
 
-    // Constructor with all instance variables. Required for unit tests
 
+/**
+ * @param id Photo identifier
+ * @param   lon Longitude where photo was taken in decimal degrees
+ * @param   lat Latitude where photo was taken in decimal degrees
+ * @param captureIsoDate    Date when photo was taken
+ * @param src   Path to the jpg file on the file system
+ * @param routes    HashSet containing route(s) overlapping with the location of the photo
 
+ */
+ // Constructor with all instance variables. Required for unit tests
     public Photo(Long id, float lon, float lat, String captureIsoDate, String src, Set<Route> routes) {
         this.id = id;
         this.lon = lon;

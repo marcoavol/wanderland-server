@@ -4,7 +4,14 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Route saves a route with all associated photos to the repository
+ * There is a many-to-many relationship between routes and photos.
+ *
+ * @author Marco Volken
+ * @author Irene Keller
 
+ */
 // A Route object contains an ID and a set if photos associated with the route
 @Entity
 public class Route {
