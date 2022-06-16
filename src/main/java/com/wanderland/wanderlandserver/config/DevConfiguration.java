@@ -15,13 +15,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * DEPRECATED: Populates repositories with test data
+ * @deprecated Populates repositories with test data
  *
  * @author Irene Keller
-
  */
-
-
 
 @Configuration
 @Profile("dev")
@@ -51,7 +48,6 @@ public class DevConfiguration {
             .collect(Collectors.toCollection(HashSet::new));
     Set<Photo> set3 = Stream.of(photo4, photo5, photo6)
             .collect(Collectors.toCollection(HashSet::new));
-
 
  //   @PostConstruct
     public void createData(){

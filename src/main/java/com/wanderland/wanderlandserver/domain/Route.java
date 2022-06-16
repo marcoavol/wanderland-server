@@ -5,14 +5,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Route saves a route with all associated photos to the repository
+ * Route saves a route with all associated photos to the repository.
  * There is a many-to-many relationship between routes and photos.
  *
  * @author Marco Volken
  * @author Irene Keller
-
  */
-// A Route object contains an ID and a set if photos associated with the route
+
 @Entity
 public class Route {
 
@@ -23,10 +22,12 @@ public class Route {
         @ManyToMany(mappedBy = "routes", fetch = FetchType.EAGER)
         private Set<Photo> photos = new HashSet<Photo>();
 
-        // empty constructor
         public Route() { }
 
-        // constructor with instance variables (required by unit tests)
+        /**
+         * @param id the unique identifier of the instance
+         * @param photos a Set containing all Photo instances to which this Route instance shall be associated with
+         */
         public Route(Integer id, Set<Photo> photos) {
                 this.id = id;
                 this.photos = photos;
@@ -52,8 +53,6 @@ public class Route {
         public String toString(){
                return "RouteId: " + this.id
                        + "\n";
-
-
         }
 
 }

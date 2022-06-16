@@ -1,5 +1,3 @@
-// Base on https://springframework.guru/testing-spring-boot-restful-services/
-
 package com.wanderland.wanderlandserver.repositories;
 
 import com.wanderland.wanderlandserver.domain.Photo;
@@ -11,28 +9,30 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Irene Keller
  */
 
-@ExtendWith(SpringExtension.class) //integrates the Spring test context framework
+@ExtendWith(SpringExtension.class) // integrates the Spring test context framework
 @DataJpaTest
 class PhotoRepositoryTest {
 
     @Autowired
     private PhotoRepository photoRepo;
+
     private Photo photo1;
+
     private Photo photo2;
+
     private Route route1;
+
     Set<Route> myRoutes = Stream.of(route1)
             .collect(Collectors.toCollection(HashSet::new));
 
@@ -48,14 +48,8 @@ class PhotoRepositoryTest {
         photo1 = null;
         photo2 = null;
         route1 = null;
-
     }
 
-
-    /**
-     * Can we save and retrieve a photo?
-     * When we add a photo with ID 1 to the db, we expect that we can get a photo with ID 1 back from the db
-     */
     @Test
     public void addAndRetrievePhoto(){
         photoRepo.save(photo1);
@@ -63,7 +57,6 @@ class PhotoRepositoryTest {
         assertEquals(1, retrievedPhoto.getId());
     }
 
-    // Can we retrieve all photos?
     @Test
     public void retrieveListOfPhotos(){
         photoRepo.save(photo1);
@@ -71,6 +64,5 @@ class PhotoRepositoryTest {
         List<Photo> photoList = (List<Photo>) photoRepo.findAll();
         assertEquals(2, photoList.size());
     }
-
 
 }

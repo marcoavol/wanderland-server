@@ -21,13 +21,11 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Rest controller handling GET and POST requests from front-end
+ * Rest controller handling GET and POST requests from wanderland-client.
  *
  * @author Marco Volken
  * @author Irene Keller
- *
  */
-
 
 @RestController
 public class PhotoController {
@@ -44,14 +42,12 @@ public class PhotoController {
     @Autowired
     PhotoHosterService photoHosterService;
 
-
     /**
-     * Handles upload of a new photo from the front-end
-     * @param photoFile  MultipartFile
-     * @param photoInfo
-     * @return PhotoDTO
+     * Handles photo upload requests.
+     * @param photoFile the photo itself
+     * @param photoInfo a Blob of type 'application/json' containing stringified information about the photo
+     * @return a ResponseEntity with status CREATED and a body containing a PhotoDTO corresponding to the uploaded photo or status FORBIDDEN if the exact image has already been uploaded before
      */
-
     @PostMapping(path = "/photos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<PhotoDTO> createPhoto(@RequestPart MultipartFile photoFile, @RequestPart PhotoInfo photoInfo) {
@@ -74,9 +70,9 @@ public class PhotoController {
     }
 
     /**
-     *
-     * @param routeId  Identifier of a specific route
-     * @return List of PhotoDTO objects for photos associated with the route
+     * Handles requests for all photos of a specific route.
+     * @param routeId the identifier of a specific route
+     * @return a ResponseEntity with status OK and a body containing an array of PhotoDTOs corresponding to all Photo instances associated with given route or an empty array if there are none
      */
     @GetMapping(path = "/photos/{routeId}")
     @CrossOrigin(origins = {"http://localhost:4200"})
@@ -89,12 +85,10 @@ public class PhotoController {
     }
 
     /**
-     *
-     * @param fileName
-     * @return
+     * Handles requests for a photo in local filesystem with specific filename.
+     * @param fileName the unique name of the photo file as it exists in local filesystem
+     * @return a ResponseEntity with status OK and a body containing the requested FilesystemResource of type 'image/jpeg' or status NOT_FOUND if requested resource couldn't be located in local filesystem
      */
-
-
     @GetMapping(path = "/resources/photos/{fileName}", produces = MediaType.IMAGE_JPEG_VALUE)
     @CrossOrigin(origins = {"http://localhost:4200"})
     public ResponseEntity<FileSystemResource> getPhotoByFileName(@PathVariable String fileName) {

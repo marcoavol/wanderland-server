@@ -1,8 +1,3 @@
-//  Resources:
-// https://springframework.guru/testing-spring-boot-restful-services/
-// https://www.youtube.com/watch?v=sxWNJJ4dKJo
-// https://www.youtube.com/watch?v=Aasp0mWT3Ac
-
 package com.wanderland.wanderlandserver.controller;
 
 import com.wanderland.wanderlandserver.repositories.PhotoRepository;
@@ -18,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -30,10 +24,13 @@ class PhotoControllerTest {
 
     @MockBean
     private PhotoRepository photoRepository;
+
     @MockBean
     private RouteRepository routeRepository;
+
     @MockBean
     private PhotoService photoService;
+
     @MockBean
     private PhotoHosterService photoHosterService;
 
@@ -43,18 +40,14 @@ class PhotoControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-
     @BeforeEach
     public void setUp(){
         mockMvc = MockMvcBuilders.standaloneSetup(photoController).build();
     }
 
-    // Check mockMvc exists
     @Test
     void shouldCreateMockMvc() {
         assertNotNull(mockMvc);
     }
-
-
-    /// Add tests of GET and POST request
+    
 }

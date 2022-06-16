@@ -14,15 +14,10 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Collection;
 
-
-
 /**
-
  * @author Marco Volken
  * @author Irene Keller
-
  */
-
 
 @Service
 public class PhotoService {
@@ -31,9 +26,9 @@ public class PhotoService {
     FileHoster photoHosterService;
 
     /**
-     *
-     * @param photoInfo
-     * @return  Identifier for photo generated from capture date and coordinates.
+     * Generates an identifier for a Photo instance based on its captureIsoDate and coordinates.
+     * @param photoInfo the required information about the photo
+     * @return an identifier for a Photo instance
      */
     public Long generateId(PhotoInfo photoInfo) {
         String infoStr = photoInfo.getCaptureIsoDate() + photoInfo.getLon() + photoInfo.getLat();
@@ -44,11 +39,10 @@ public class PhotoService {
     }
 
     /**
-     * Converter from Photo to PhotoDTO object
-     * @param photo
-     * @return PhotoDTO
+     * Maps a Photo instance to an instance of PhotoDTO.
+     * @param photo the Photo instance
+     * @return an instance of PhotoDTO corresponding to given Photo instance
      */
-
     public PhotoDTO toDTO(Photo photo){
         PhotoDTO photoDTO = new PhotoDTO();
         photoDTO.setLat(photo.getLat());
@@ -59,11 +53,11 @@ public class PhotoService {
     }
 
     /**
-     *
-     * @param src       path to photo on file system
-     * @param photoInfo PhotoInfo object
-     * @param routes    Set containing Route object(s) associated with the photo
-     * @return Photo
+     * Creates a Photo instance.
+     * @param src a String of a (public) URL to the hosted photo
+     * @param photoInfo information about the photo
+     * @param routes a Set containing all Route instances to associate with this Photo instance
+     * @return the created Photo instance
      */
     public Photo toPhoto(String src, PhotoInfo photoInfo, Collection<Route> routes) {
         Photo photo = new Photo();
@@ -76,15 +70,14 @@ public class PhotoService {
         return photo;
     }
 
-
     /**
-     *
-     * @param photoFile MultipartFile
+     * A convenience method to allow for (implementation independent) hosting of a photo file.
+     * @param photoFile the photo file
      * @return URL
      * @throws Exception
      */
     public URL saveFile(MultipartFile photoFile) throws Exception {
-        return this.photoHosterService.save(
+        return this.photoHosterService.hostFile(
                 photoFile.getBytes(),
                 StringUtils.cleanPath(photoFile.getOriginalFilename())
         );

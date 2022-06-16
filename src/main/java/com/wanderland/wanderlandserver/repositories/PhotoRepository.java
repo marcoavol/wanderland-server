@@ -5,12 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 /**
- * JPA repository for photos
+ * JPA repository for photos.
  *
  * @author Marco Volken
  * @author Irene Keller
-
  */
 
-public interface PhotoRepository extends JpaRepository<Photo, Long> {
-}
+public interface PhotoRepository extends JpaRepository<Photo, Long> { }

@@ -10,14 +10,11 @@ import java.nio.file.Path;
 import java.util.Date;
 import java.util.Optional;
 
-
 /**
+ * A service that provides file hosting capabilities by using local filesystem.
  *
  * @author Marco Volken
-
-
  */
-
 
 @Service
 public class PhotoHosterService implements FileHoster {
@@ -33,19 +30,16 @@ public class PhotoHosterService implements FileHoster {
 
     private final String PHOTO_UPLOAD_PATH = "src/main/upload/photos";
 
-
     @Override
-    public URL save(byte[] fileContent, String fileName) throws Exception {
+    public URL hostFile(byte[] fileContent, String fileName) throws Exception {
         String uniqueFileName = new Date().getTime() + "-" + fileName;
         this.fileSystemRepository.saveInFileSystem(fileContent, uniqueFileName, PHOTO_UPLOAD_PATH);
         return new URL(BASE_URL + PUBLIC_RESOURCES_PATH + "/photos/" + uniqueFileName);
     }
 
-
     /**
-     *
-     * @param fileName name of jpg file with photo
-     * @return  FileSystemResource
+     * A convenience method to retrieve a resource in local filesystem by its unique filename.
+     * @see FileSystemRepository#findInFileSystem(Path) 
      */
     public Optional<FileSystemResource> load(String fileName) {
         Path filePath = Path.of(PHOTO_UPLOAD_PATH + "/" + fileName);
