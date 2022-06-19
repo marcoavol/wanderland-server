@@ -26,19 +26,6 @@ public class PhotoService {
     FileHoster photoHosterService;
 
     /**
-     * Generates an identifier for a Photo instance based on its captureIsoDate and coordinates.
-     * @param photoInfo the required information about the photo
-     * @return an identifier for a Photo instance
-     */
-    public Long generateId(PhotoInfo photoInfo) {
-        String infoStr = photoInfo.getCaptureIsoDate() + photoInfo.getLon() + photoInfo.getLat();
-        ByteBuffer buffer = ByteBuffer.allocate(infoStr.getBytes().length);
-        buffer.put(infoStr.getBytes());
-        buffer.flip();
-        return buffer.getLong();
-    }
-
-    /**
      * Maps a Photo instance to an instance of PhotoDTO.
      * @param photo the Photo instance
      * @return an instance of PhotoDTO corresponding to given Photo instance
@@ -61,7 +48,6 @@ public class PhotoService {
      */
     public Photo toPhoto(String src, PhotoInfo photoInfo, Collection<Route> routes) {
         Photo photo = new Photo();
-        photo.setId(this.generateId(photoInfo));
         photo.setLon(photoInfo.getLon());
         photo.setLat(photoInfo.getLat());
         photo.setCaptureIsoDate(photoInfo.getCaptureIsoDate());

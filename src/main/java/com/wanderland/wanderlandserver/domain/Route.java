@@ -16,7 +16,7 @@ import java.util.Set;
 public class Route {
 
         @Id
-        @Column(name = "id", nullable = false, unique = true, updatable = false)
+        @Column(nullable = false, unique = true, updatable = false)
         private Integer id;
 
         @ManyToMany(mappedBy = "routes", fetch = FetchType.EAGER)

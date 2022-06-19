@@ -17,7 +17,7 @@ import java.util.Set;
 public class Photo {
 
     @Id
-    @Column(name = "id", nullable = false, unique = true, updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private float lon;
@@ -57,10 +57,6 @@ public class Photo {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public float getLon() {

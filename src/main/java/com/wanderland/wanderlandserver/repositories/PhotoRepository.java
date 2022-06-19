@@ -11,4 +11,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Irene Keller
  */
 
-public interface PhotoRepository extends JpaRepository<Photo, Long> { }
+public interface PhotoRepository extends JpaRepository<Photo, Long> {
+
+    boolean existsByCaptureIsoDateAndLonAndLat(String captureIsoDate, float lon, float lat);
+
+}

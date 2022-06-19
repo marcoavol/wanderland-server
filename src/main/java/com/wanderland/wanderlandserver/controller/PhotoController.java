@@ -51,8 +51,11 @@ public class PhotoController {
     @PostMapping(path = "/photos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<PhotoDTO> createPhoto(@RequestPart MultipartFile photoFile, @RequestPart PhotoInfo photoInfo) {
-        Optional<Photo> existingPhoto = this.photoRepository.findById(this.photoService.generateId(photoInfo));
-        if (existingPhoto.isPresent()) {
+        if (this.photoRepository.existsByCaptureIsoDateAndLonAndLat(
+                photoInfo.getCaptureIsoDate(),
+                photoInfo.getLon(),
+                photoInfo.getLat()
+        )) {
             return new ResponseEntity("Photo has already been uploaded.", HttpStatus.FORBIDDEN);
         }
         Set<Route> routes = this.routeRepository.createOrGet(photoInfo.getRouteIds());
