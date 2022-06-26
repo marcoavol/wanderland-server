@@ -3,6 +3,8 @@ version: '1.0'
 services:
   wanderland-server:
     image: wanderland-backend:latest
+    volumes:
+      - ../photo_upload:/src/main/upload/photos
     depends_on:
       - postgres14
     restart: always
