@@ -114,3 +114,9 @@ Once the database exists in the volume and the volume is mounted in the docker c
 
 
 3) Switch off as `docker-compose down`
+
+
+#### Push images to Dockerhub
+https://docs.docker.com/docker-hub/repos/
+1) By re-tag an existing local image:  `docker tag <existing-image> <hub-user>/<repo-name>[:<tag>]`
+2) `docker push <hub-user>/<repo-name>:<tag>`
