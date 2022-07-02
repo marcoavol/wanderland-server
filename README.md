@@ -11,17 +11,17 @@ The Wanderland app can be run either in local mode or on our Hetzner server.
 
 ### Local mode
 The postgreSQL database will be persisted in a docker volume. The jpg files of the photos will be saved to a directory called photo_upload located at the same level as the wanderland-server directory.
-1) Start the app using `docker-compose up -f docker-compose-local.yml -d` from the app's root directory. 
+1) Start the app using `docker-compose -f docker-compose-local.yml up -d` from the app's root directory. 
 2) Connect in browser at localhost:4200.
-3) Shut down the app: `docker-compose down`
+3) Shut down the app: `docker-compose -f docker-compose-local.yml down`
 
 ### Deployment mode
 The postgreSQL database will be persisted in a docker volume. The jpg files are saved to a directory on our Hetzner volume. We use [Certbot](https://certbot.eff.org/) to obtain an SSL certificate.
 1) Login to server: `ssh -o "ServerAliveInterval 60" root@135.181.205.41`
 2) `cd /mnt/docker_images`
-3) `docker compose up -f docker-compose-deploy.yml -d`
+3) `docker compose -f docker-compose-deploy.yml up -d`
 4) Connect to the app in browser at https://www.wanderland.dev or 135.181.205.41:4200
-5) Shut down the app: `docker compose down`
+5) Shut down the app: `docker compose -f docker-compose-deploy.yml down`
 
 
 ## Profiles
@@ -31,7 +31,10 @@ The postgreSQL database will be persisted in a docker volume. The jpg files are 
 
 
 
-## How to dockerize wanderland-server
+
+## Notes
+
+### How to dockerize wanderland-server
 
 Video tutorial: https://www.jetbrains.com/help/idea/docker.html. Assumes Intellij Ultimate edition
 
@@ -64,9 +67,9 @@ Initialise photodb needs to be done when a new container is started where photod
 
 Also using https://www.educative.io/answers/how-do-you-dockerize-a-maven-project
 
-1) Create jar file for project: Rightclick on wanderland-server --> Run maven --> package
-
-2) New --> File --> Dockerfile. In Dockerfile enter:
+1) In application.properties, specify which profile should be used. See Profiles section above for more info.
+2) Create jar file for project: Rightclick on wanderland-server --> Run maven --> package
+3) New --> File --> Dockerfile. In Dockerfile enter:
 ```
 FROM openjdk:17
 ADD target/wanderland-server-0.0.1-SNAPSHOT.jar wanderland-server-0.0.1-SNAPSHOT.jar
@@ -74,7 +77,7 @@ ENTRYPOINT ["java", "-jar","wanderland-server-0.0.1-SNAPSHOT.jar"]
 EXPOSE 8080
 ```
 
-3) Create image, e.g. by running Dockerfile in Intellij or from command-line (analogous to front-end)
+4) Create image, e.g. by running Dockerfile in Intellij or from command-line as `docker build -t <image_name>:<tag_name> .`
 
 
 ### C) Docker compose with Frontend, Backend and Postgresql
