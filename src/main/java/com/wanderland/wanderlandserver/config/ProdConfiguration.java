@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Profile;
 import javax.transaction.Transactional;
 
 /**
- * @deprecated Populates repositories with test data
+ * @deprecated Populates repositories with test data for profile with postgresql database
  *
  * @author Irene Keller
  */

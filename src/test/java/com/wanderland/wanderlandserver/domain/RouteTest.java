@@ -32,6 +32,9 @@ class RouteTest {
         route1 = null;
     }
 
+    /**
+     * Tests if the size of a Set of Photo objects is as expected after adding a new Photo
+     */
     @Test
     public void addNewPhoto(){
         route1.addPhoto(new Photo());

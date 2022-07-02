@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * @deprecated Populates repositories with test data
+ * @deprecated Populates repositories with test data for dev profile with h2 database
  *
  * @author Irene Keller
  */

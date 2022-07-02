@@ -1,9 +1,10 @@
-version: '1.0'
+version: '3.8'
+
 services:
   wanderland-server:
-    image: wanderland-backend:3.0
+    image: ikeller13/wanderland-server:local-1.0
     volumes:
-      - /mnt/wanderland/photos:/mnt/wanderland/photos
+      - ../photo_upload:/src/main/upload/photos
     depends_on:
       - postgres14
     restart: always
@@ -24,24 +25,19 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - my-db-postgres:/var/lib/postgresql/data
+      - wanderland-db-postgres:/var/lib/postgresql/data
 
-  wanderland-frontend:
-    image: ikeller13/wanderland-client:7.0
+  wanderland-client:
+    image: ikeller13/wanderland-client:local-1.0
     ports:
-      - "80:80"
-      - "443:443"
+      - "4200:80"
     depends_on:
       - wanderland-server
-    restart: always
-    volumes:
-      - ./certbot/www/:/var/www/certbot/:ro
-      - ./certbot/conf/:/etc/letsencrypt/:ro
-  certbot:
-    image: certbot/certbot:v1.28.0
-    volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
 
 volumes:
-  my-db-postgres:
+  wanderland-db-postgres:
+
+
+
+
+

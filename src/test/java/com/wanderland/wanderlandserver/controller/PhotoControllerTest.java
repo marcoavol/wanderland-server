@@ -17,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Irene Keller
+ *
+ * Currently only sets up a mockMvc instance which could then be used to test HTTP requests.
  */
 
 @ExtendWith(MockitoExtension.class)
@@ -45,6 +47,9 @@ class PhotoControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(photoController).build();
     }
 
+    /**
+     * Test if the mockMVC object is created
+     */
     @Test
     void shouldCreateMockMvc() {
         assertNotNull(mockMvc);

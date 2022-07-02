@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Irene Keller
  */
 
-@ExtendWith(SpringExtension.class) // integrates the Spring test context framework
+@ExtendWith(SpringExtension.class)
 @DataJpaTest
 class PhotoRepositoryTest {
 
@@ -50,6 +50,9 @@ class PhotoRepositoryTest {
         route1 = null;
     }
 
+    /**
+     * Tests if a Photo with a given ID can be retrieved from the repository after it has been added.
+     */
     @Test
     public void addAndRetrievePhoto(){
         photoRepo.save(photo1);
@@ -57,6 +60,9 @@ class PhotoRepositoryTest {
         assertEquals(1, retrievedPhoto.getId());
     }
 
+    /**
+     * Tests if the number of Photo objects that can be retrieved from the repository matches the number that was added.
+     */
     @Test
     public void retrieveListOfPhotos(){
         photoRepo.save(photo1);

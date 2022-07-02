@@ -1,10 +1,37 @@
-## Wanderland Server
+# Wanderland Server
+
+The companion Github repository with the front-end code is available [here](https://github.com/marcoavol/wanderland-client)
+
+The app is available [here](https://www.wanderland.dev).
 
 
-* localhost:8080/api-docs.html: Dokumentation des APIs. 
+## How to start the app
+
+The Wanderland app can be run either in local mode or on our Hetzner server. 
+
+### Local mode
+The postgreSQL database will be persisted in a docker volume. The jpg files of the photos will be saved to a directory called photo_upload located at the same level as the wanderland-server directory.
+1) Start the app using `docker-compose up -f docker-compose-local.yml -d` from the app's root directory. 
+2) Connect in browser at localhost:4200.
+3) Shut down the app: `docker-compose down`
+
+### Deployment mode
+The postgreSQL database will be persisted in a docker volume. The jpg files are saved to a directory on our Hetzner volume. We use [Certbot](https://certbot.eff.org/) to obtain an SSL certificate.
+1) Login to server: `ssh -o "ServerAliveInterval 60" root@135.181.205.41`
+2) `cd /mnt/docker_images`
+3) `docker compose up -f docker-compose-deploy.yml -d`
+4) Connect to the app in browser at https://www.wanderland.dev or 135.181.205.41:4200
+5) Shut down the app: `docker compose down`
 
 
-# Dockerize
+## Profiles
+- deploy: Configuration to run the app on our Hetzner server with a PostgreSQL database
+- local: Configuration to run the app locally with a PostgreSQL database
+- dev: Configuration to run the app locally with an in-memory h2 database
+
+
+
+## How to dockerize wanderland-server
 
 Video tutorial: https://www.jetbrains.com/help/idea/docker.html. Assumes Intellij Ultimate edition
 
@@ -33,8 +60,6 @@ Initialise photodb needs to be done when a new container is started where photod
 6) Run: CREATE DATABASE photodb;
 
 
-
-
 ### B) Container with Backend
 
 Also using https://www.educative.io/answers/how-do-you-dockerize-a-maven-project
@@ -59,13 +84,15 @@ https://www.section.io/engineering-education/running-a-multi-container-springboo
 https://wkrzywiec.medium.com/how-to-run-database-backend-and-frontend-in-a-single-click-with-docker-compose-4bcda66f6de  
 About docker volumes: https://docs.docker.com/storage/volumes/
 
-1) Create docker-compose.yml file:
+1) Create docker-compose.yml file for local use:
 ```
-version: '1.0'
+version: '3.8'
 
 services:
   wanderland-server:
-    image: wanderland-backend:latest
+    image: ikeller13/wanderland-server:local-1.0
+    volumes:
+      - ../photo_upload:/src/main/upload/photos
     depends_on:
       - postgres14
     restart: always
@@ -86,19 +113,19 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - my-db-postgres:/var/lib/postgresql/data
+      - wanderland-db-postgres:/var/lib/postgresql/data
 
-  wanderland-frontend:
-    image: wanderland-client-image:2.0
+  wanderland-client:
+    image: ikeller13/wanderland-client:local-1.0
     ports:
       - "4200:80"
     depends_on:
       - wanderland-server
 
 volumes:
-  my-db-postgres:
+  wanderland-db-postgres:
 ```
-my-db-postgres is a volume that will be managed by docker but will persist. This is recommended over "bind mounts" where a specific directory in the host file-system is mounted, as explained [here](https://docs.docker.com/storage/volumes/). Apparently, it should be easy to migrate docker volumes to a different host.
+wanderland-db-postgres is a volume that will be managed by docker but will persist. This is recommended over "bind mounts" where a specific directory in the host file-system is mounted, as explained [here](https://docs.docker.com/storage/volumes/). Apparently, it should be easy to migrate docker volumes to a different host.
 
 To check which volumes exist on your system: `docker volume ls`
 
@@ -106,7 +133,7 @@ To check which volumes exist on your system: `docker volume ls`
 
 2) Start up as `docker-compose up`
 
-Note: If the my-db-postgres volume does not yet exist on your system, it will be created automatically. You may encounter problems, however, if the photodb database does not yet exist. In this case, it may be necessary to open a psql shell within the postgres container as follows:
+Note: If the wanderland-db-postgres volume does not yet exist on your system, it will be created automatically. You may encounter problems, however, if the photodb database does not yet exist. In this case, it may be necessary to open a psql shell within the postgres container as follows:
 - In Intellij, navigate to the running container (Services tab) --> Right click on postgres container --> Exec --> Create and run --> `psql postgresql://postgres:4c6BqbLccYqbMx9rXqDPj7zbCdiK8YYA5QPxf33E@localhost:5432`
 - Run: `CREATE DATABASE photodb;`
 

@@ -49,8 +49,11 @@ class PhotoServiceTest {
         photoInfo = null;
     }
 
-    // The most complex step when converting a Photo to a PhotoDTO object, is to convert the HashSet<Route> to an Array containing only the route IDs.
-    // Here we test if the number of ids and the values correspond to our expectation based on setUp()
+    /**
+     * The most complex step when converting a Photo to a PhotoDTO object, is to convert the HashSet<Route> to an Array containing only the route IDs.
+     * Here we test if the number of IDs and their values correspond to our expectation based on setUp()
+     * A disadvantage of this strategy is that the test can fail for more than one reason
+     */
     @Test
     void toDTO() {
         PhotoDTO photoDTO = photoService.toDTO(photo);
@@ -59,7 +62,9 @@ class PhotoServiceTest {
         assertTrue((dto_routes.length == 2) && (dto_routes[0] == 1) && (dto_routes[1] == 2));
     }
 
-    // We extract a data field from the newly created Photo object and test if the value matches our expectation based on setUp()
+    /**
+     * In this test, we extract a data field from the newly created Photo object and test if the value matches our expectation based on setUp()
+     */
     @Test
     void toPhoto() {
         Photo testPhoto = photoService.toPhoto("myfotofile.jpg", photoInfo, Stream.of(route1, route2)

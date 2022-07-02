@@ -50,6 +50,9 @@ class RouteRepositoryTest {
         route2 = null;
     }
 
+    /**
+     * Tests if a Route object with a given ID can be retrieved from the repository after it has been added.
+     */
     @Test
     public void addAndRetrieveRoute(){
         routeRepo.save(route1);
@@ -57,25 +60,38 @@ class RouteRepositoryTest {
         assertEquals(1, retrievedRoute.getId());
     }
 
+    /**
+     * Tests what happens when a Route object that does not yet exist in the repository is added
+     * The Route objects instantiated above both have 2 Photo objects associated with them
+     * In contrast, a Route object that is instantiated by createOrGet() will not have any Photos associated with it yet
+     * We can use this to distinguish between existing and newly created Route objects.
+     */
     @Test
     public void addNewRouteUsingCreateOrGet(){
-        routeRepo.save(route1); // at this point repo contains only route 1
+        // Add route1 instantiated above to the repository
+        routeRepo.save(route1);
+        // Add a second Route object with ID 2. This does not yet exist in the repository and a new Route object should be instantiated.
         routeIds[0] = route2.getId();
-        routeRepo.createOrGet(routeIds); // now we want to add route 2. A Route with id 2 does not yet exist in the repo and should be added.
-        // When the Route object is instantiated, the Set of Photos is empty.
+        routeRepo.createOrGet(routeIds);
+        // We expect that a new Route should not yet have any Photo objects associated with it.
         Route retrievedRoute = routeRepo.findById(route2.getId()).get();
         assertEquals(0, retrievedRoute.getPhotos().size());
     }
 
+    /**
+     * Test what happens when we try to add a Route object that already exists in the repository
+     * The rationale of the test is the same as outlined for the previous test
+     */
     @Test
     public void retrieveExistingRouteUsingCreateOrGet(){
+        // Add both Route objects instantiated above to the repository
         routeRepo.save(route1);
         routeRepo.save(route2);
-        routeIds[0] = route2.getId();
-        routeRepo.createOrGet(routeIds); // now we want to add route 2, which already exists in the repo.
+        // Try to add a Route with ID 2, which already exists in the repository
         // In this case, createOrGet() should retrieve the existing Route object, containing 2 Photos.
+        routeIds[0] = route2.getId();
+        routeRepo.createOrGet(routeIds);
         Route retrievedRoute = routeRepo.findById(route2.getId()).get();
         assertEquals(2, retrievedRoute.getPhotos().size());
     }
-
 }
