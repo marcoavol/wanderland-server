@@ -4,6 +4,7 @@ services:
     image: ikeller13/wanderland-server:deploy-1.0
     volumes:
       - /mnt/wanderland/photos:/src/main/upload/photos
+      - ./certbot/conf/:/etc/letsencrypt/:ro
     depends_on:
       - postgres14
     restart: always
