@@ -27,7 +27,7 @@ The postgreSQL database will be persisted in a docker volume. The jpg files are 
 ## Profiles
 - deploy: Configuration to run the app on our Hetzner server with a PostgreSQL database
 - local: Configuration to run the app locally with a PostgreSQL database
-- dev: Configuration to run the app locally with an in-memory h2 database
+- local-h2: Configuration to run the app locally with an in-memory h2 database
 
 
 
