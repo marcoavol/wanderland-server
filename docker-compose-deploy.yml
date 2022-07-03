@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   wanderland-server:
-    image: ikeller13/wanderland-server:deploy-1.0
+    image: ikeller13/wanderland-server:deploy-7.0
     volumes:
       - /mnt/wanderland/photos:/src/main/upload/photos
       - ./certbot/conf/:/etc/letsencrypt/:ro
@@ -28,7 +28,7 @@ services:
       - wanderland-db-postgres:/var/lib/postgresql/data
 
   wanderland-client:
-    image: ikeller13/wanderland-client:deploy-1.0
+    image: ikeller13/wanderland-client:deploy-3.0
     ports:
       - "80:80"
       - "443:443"
