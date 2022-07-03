@@ -74,7 +74,6 @@ Also using https://www.educative.io/answers/how-do-you-dockerize-a-maven-project
 FROM openjdk:17
 ADD target/wanderland-server-0.0.1-SNAPSHOT.jar wanderland-server-0.0.1-SNAPSHOT.jar
 ENTRYPOINT ["java", "-jar","wanderland-server-0.0.1-SNAPSHOT.jar"]
-EXPOSE 8080
 ```
 
 4) Create image, e.g. by running Dockerfile in Intellij or from command-line as `docker build -t <image_name>:<tag_name> .`

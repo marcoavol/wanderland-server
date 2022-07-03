@@ -8,7 +8,7 @@ services:
       - postgres14
     restart: always
     ports:
-      - "8080:8080"
+      - "8443:8443"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres14:5432/photodb
       - SPRING_DATASOURCE_USERNAME=postgres
