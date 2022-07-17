@@ -49,7 +49,7 @@ public class PhotoController {
      * @return a ResponseEntity with status CREATED and a body containing a PhotoDTO corresponding to the uploaded photo or status FORBIDDEN if the exact image has already been uploaded before
      */
     @PostMapping(path = "/photos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @CrossOrigin(origins = "${app.allowed_origins}")
+    @CrossOrigin(origins = {"${app.allowed_origin}", "${app.allowed.origin_www}"})
     public ResponseEntity<PhotoDTO> createPhoto(@RequestPart MultipartFile photoFile, @RequestPart PhotoInfo photoInfo) {
         if (this.photoRepository.existsByCaptureIsoDateAndLonAndLat(
                 photoInfo.getCaptureIsoDate(),
@@ -77,7 +77,7 @@ public class PhotoController {
      * @return a ResponseEntity with status OK and a body containing an array of PhotoDTOs corresponding to all Photo instances associated with given route or an empty array if there are none
      */
     @GetMapping(path = "/photos/{routeId}")
-    @CrossOrigin(origins = "${app.allowed_origins}")
+    @CrossOrigin(origins = {"${app.allowed_origin}", "${app.allowed.origin_www}"})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<PhotoDTO[]> getPhotosByRouteId(@PathVariable Integer routeId) {
         Optional<Route> route = this.routeRepository.findById(routeId);
@@ -92,7 +92,7 @@ public class PhotoController {
      * @return a ResponseEntity with status OK and a body containing the requested FilesystemResource of type 'image/jpeg' or status NOT_FOUND if requested resource couldn't be located in local filesystem
      */
     @GetMapping(path = "/resources/photos/{fileName}", produces = MediaType.IMAGE_JPEG_VALUE)
-    @CrossOrigin(origins = "${app.allowed_origins}")
+    @CrossOrigin(origins = {"${app.allowed_origin}", "${app.allowed.origin_www}"})
     public ResponseEntity<FileSystemResource> getPhotoByFileName(@PathVariable String fileName) {
         Optional<FileSystemResource> photoResource = this.photoHosterService.load(fileName);
         if (!photoResource.isPresent()) {
