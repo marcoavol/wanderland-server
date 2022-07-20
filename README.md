@@ -86,8 +86,7 @@ ADD target/wanderland-server-0.0.1-SNAPSHOT.jar wanderland-server-0.0.1-SNAPSHOT
 ENTRYPOINT ["java", "-jar","wanderland-server-0.0.1-SNAPSHOT.jar"]
 ```
 
-4) Create image, e.g. by running Dockerfile in Intellij or from command-line as `docker build -t <image_name>:<tag_name> .`
---> On Mac arm (M1, ...) see https://stackoverflow.com/questions/66920645/exec-format-error-when-running-containers-build-with-apple-m1-chip-arm-based !
+4) Create image, e.g. by running Dockerfile in Intellij or from command-line as `docker build -t <image_name>:<tag_name> .` or `docker buildx build --platform linux/amd64 -t <dockerhub_username>/<image_name>:<tag_name> .` on Macs with ARM chip (M1, ...) ([see here](https://stackoverflow.com/questions/66920645/exec-format-error-when-running-containers-build-with-apple-m1-chip-arm-based))!
 
 
 #### Docker compose with Frontend, Backend and Postgresql
